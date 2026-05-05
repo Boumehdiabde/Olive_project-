@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard - Olive Cultivation Management{% endblock %}
+
+{% block content %}
+<h1>📊 Dashboard</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Groves</h3>
+        <div class="value">{{ total_groves }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Active Groves</h3>
+        <div class="value">{{ active_groves }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Trees</h3>
+        <div class="value">{{ total_trees }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Harvest (kg)</h3>
+        <div class="value">{{ total_harvest|floatformat:0 }}</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Welcome to Olive Cultivation Management</h2>
+    <p>This system helps you manage your olive groves efficiently, track harvests, and maintain comprehensive records of all grove activities.</p>
+    <br>
+    <a href="{% url 'groves_list' %}" class="btn">View All Groves</a>
+</div>
+{% endblock %}

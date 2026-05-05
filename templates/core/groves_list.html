@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Groves - Olive Cultivation Management{% endblock %}
+
+{% block content %}
+<h1>🌳 Olive Groves</h1>
+
+<div class="card">
+    {% if groves %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Variety</th>
+                <th>Trees</th>
+                <th>Area (ha)</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grove in groves %}
+            <tr>
+                <td><strong>{{ grove.name }}</strong></td>
+                <td>{{ grove.location }}</td>
+                <td>{{ grove.variety }}</td>
+                <td>{{ grove.tree_count }}</td>
+                <td>{{ grove.area_hectares }}</td>
+                <td>
+                    <span style="
+                        padding: 5px 10px;
+                        border-radius: 3px;
+                        font-size: 12px;
+                        font-weight: bold;
+                        {% if grove.status == 'Active' %}
+                        background-color: #d4edda;
+                        color: #155724;
+                        {% elif grove.status == 'Dormant' %}
+                        background-color: #fff3cd;
+                        color: #856404;
+                        {% else %}
+                        background-color: #d1ecf1;
+                        color: #0c5460;
+                        {% endif %}
+                    ">
+                        {{ grove.status }}
+                    </span>
+                </td>
+                <td><a href="{% url 'grove_detail' grove.pk %}" class="btn" style="font-size: 12px;">View</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No groves found. <a href="/admin/core/grove/add/">Create one in the admin panel</a></p>
+    {% endif %}
+</div>
+{% endblock %}

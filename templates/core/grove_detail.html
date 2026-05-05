@@ -1,0 +1,140 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ grove.name }} - Olive Cultivation Management{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'groves_list' %}" style="color: #667eea; text-decoration: none;">← Back to Groves</a>
+</div>
+
+<h1>🌳 {{ grove.name }}</h1>
+
+<div class="card">
+    <h2>Grove Information</h2>
+    <table style="border: none;">
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Location:</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.location }}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Variety:</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.variety }}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Tree Count:</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.tree_count }}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Area (hectares):</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.area_hectares }}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Planting Year:</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.planting_year }}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Irrigation Type:</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.irrigation_type }}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Soil Type:</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.soil_type }}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Status:</strong></td>
+            <td style="border: none; padding: 10px 0;">
+                <span style="
+                    padding: 5px 10px;
+                    border-radius: 3px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    {% if grove.status == 'Active' %}
+                    background-color: #d4edda;
+                    color: #155724;
+                    {% elif grove.status == 'Dormant' %}
+                    background-color: #fff3cd;
+                    color: #856404;
+                    {% else %}
+                    background-color: #d1ecf1;
+                    color: #0c5460;
+                    {% endif %}
+                ">
+                    {{ grove.status }}
+                </span>
+            </td>
+        </tr>
+        {% if grove.notes %}
+        <tr>
+            <td style="border: none; padding: 10px 0;"><strong>Notes:</strong></td>
+            <td style="border: none; padding: 10px 0;">{{ grove.notes }}</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+
+{% if harvests %}
+<div class="card">
+    <h2>🍞 Harvests</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Quantity (kg)</th>
+                <th>Quality Grade</th>
+                <th>Oil Yield (%)</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for harvest in harvests %}
+            <tr>
+                <td>{{ harvest.harvest_date }}</td>
+                <td>{{ harvest.quantity }}</td>
+                <td>{{ harvest.quality_grade }}</td>
+                <td>{% if harvest.oil_yield %}{{ harvest.oil_yield }}{% else %}N/A{% endif %}</td>
+                <td>{{ harvest.notes|truncatewords:10 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% if maintenance_logs %}
+<div class="card">
+    <h2>🔧 Maintenance Log</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Task Type</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Cost</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in maintenance_logs %}
+            <tr>
+                <td><strong>{{ log.task_type }}</strong></td>
+                <td>{{ log.date }}</td>
+                <td>{{ log.description|truncatewords:10 }}</td>
+                <td>{% if log.cost %}${{ log.cost }}{% else %}N/A{% endif %}</td>
+                <td>
+                    {% if log.completed %}
+                    <span style="color: green; font-weight: bold;">✓ Completed</span>
+                    {% else %}
+                    <span style="color: orange; font-weight: bold;">⏳ Pending</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<div class="card" style="text-align: center;">
+    <a href="/admin/core/grove/{{ grove.pk }}/change/" class="btn">Edit in Admin</a>
+</div>
+{% endblock %}
